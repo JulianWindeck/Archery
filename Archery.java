@@ -43,7 +43,7 @@ public class Archery extends JPanel implements Runnable {
 	private final int FPS = 175;
 	
 	//game objects
-	private Vector mousePosition = new Vector(); //TODO: so there isn't an ugly path line at the beginning
+	private Vector mousePosition = new Vector(); 
 	private boolean mouseLeftPressed;
 	private boolean mouseRightPressed;
 	
@@ -55,15 +55,14 @@ public class Archery extends JPanel implements Runnable {
 	private Vector gravity = new Vector(0, 9.81 / FPS); 
 	private boolean precisionLine = true;
 	private boolean precisionLineOnlyMouse = false;
-	private boolean blockSolidWhileInPermeableState = true; //true: collision detections also while moving the block
+	private boolean blockSolidWhileInPermeableState = true; 
 	private boolean antiAliasing = true;
 	private boolean maxForce = true;
 	
 	private ArrayList<Arrow> arrows = new ArrayList<>();
-	private Block block = null; //TODO: collisionsabfrage nur noch wenn status block verändert; pfeile immer ganz an block ran
-							   //TODO: pfeile verlieren geschw. bei kollision
+	private Block block = null; 
 	
-	//constructor
+
 	private Archery() {
 		super();
 		
@@ -151,7 +150,6 @@ public class Archery extends JPanel implements Runnable {
 		});
 	}
 	
-	//methods
 	
 	@Override
 	public Dimension getPreferredSize() {
@@ -178,11 +176,11 @@ public class Archery extends JPanel implements Runnable {
 		g.setColor(Color.WHITE);
 		g.fillRect(0, 0, getWidth(), getHeight());
 		
-		//render entities
+		
 		
 		//render arrows
 		for(int i = arrows.size() - 1; i >= 0; i--) {
-			arrows.get(i).draw(g); //liefert manchmal eventqueue fehler, da paintComponent() genutzt wird
+			arrows.get(i).draw(g); 
 		}
 		block.draw(g);
 	
@@ -210,17 +208,17 @@ public class Archery extends JPanel implements Runnable {
 			Vector power = (mouseLeftPressed) ? initPosition.getSubtraction(mousePosition) : initPosition.getSubtraction(endPosition);
 			power.multiply(0.1);
 			Vector nextPos = initPosition.getClone();
-			for(int i = 0; i < 1000; i++) { //nächsten 100 positionen
-				//pos bestimmen
+			for(int i = 0; i < 1000; i++) { //compute next 1000 positions
+				
 				power.add(gravity);
 				nextPos.add(power);
-				//zeichnen
+				
 				g.drawLine((int) nextPos.getX(), (int) nextPos.getY(), (int) nextPos.getX(), (int) nextPos.getY());
 				
 			}
 		}
 		
-		//rendering control information
+		
 		g.setColor(Color.DARK_GRAY);
 		g.drawString("Number of arrows: " + arrows.size(), getWidth() - 300, getHeight() - 60);
 		g.drawString("Move block by pressing right mouse button", getWidth() - 300, getHeight() - 80);
@@ -284,7 +282,7 @@ public class Archery extends JPanel implements Runnable {
 	//called when mouse is released
 	private void createNewArrow() {
 		Vector power = initPosition.getSubtraction(mousePosition);
-		power.multiply(0.1); //Damit nicht so schnell 0.1
+		power.multiply(0.1); 
 		arrows.add(new Arrow(initPosition.getClone(), power)); 
 	}
 	//when space is pressed
@@ -312,11 +310,6 @@ public class Archery extends JPanel implements Runnable {
 			g.setColor(Color.RED);
 			g.fillOval((int)pos.getX() - r, (int)pos.getY() - r, r*2, r*2);
 			
-			//vel vektor zeichnen
-			//g.setColor(Color.DARK_GRAY);
-			//g.drawLine((int)pos.getX(), (int)pos.getY(), (int)pos.getX()  + (int)vel.getX() * 10, (int)pos.getY() + (int)vel.getY() * 10);
-			
-			//pfeilrest zeichnen
 			Vector rest = vel.getClone();
 			rest.multiply(1/rest.getBetrag());
 			rest.multiply(35);
